@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "962884197905",
+    "project_id": "injusticeapp-48ed3",
+    "storage_bucket": "injusticeapp-48ed3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962884197905:android:6be0217912f9a1eb9ddbb0",
+        "android_client_info": {
+          "package_name": "com.example.injustice_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhFjK8hbyGUYvsFKy5Jz8xSBDYMV6h0Oc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
