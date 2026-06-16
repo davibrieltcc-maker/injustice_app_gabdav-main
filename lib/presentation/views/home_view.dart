@@ -27,7 +27,6 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     _vmAccount = injector.get<AccountViewModel>();
-    _vmAccount.commands.fetchAccount();
   }
 
   @override
@@ -114,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
       ),
       drawer: AppDrawer(),
       body: Watch((context) {
-        if (_vmAccount.commands.getAccountCommand.isExecuting.value) {
+        if (_vmAccount.commands.getAccountsCommand.isExecuting.value) {
           return const LoadingIndicator(message: 'Carregando conta...');
         }
 
@@ -231,7 +230,7 @@ class _HomeViewState extends State<HomeView> {
 
     return RefreshIndicator(
       key: const ValueKey('account'),
-      onRefresh: () async => await _vmAccount.commands.fetchAccount(),
+      onRefresh: () async => await _vmAccount.commands.fetchAccounts(),
       color: Theme.of(context).colorScheme.secondary,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

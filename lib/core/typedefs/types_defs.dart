@@ -8,15 +8,18 @@ import '../patterns/result.dart';
 // typedefs para tipo Result
 typedef VoidResult = Result<void, Failure>;
 typedef AccountResult = Result<Account, Failure>;
-typedef CharacterResult = Result<Character,Failure>;
+typedef ListAccountResult = Result<List<Account>, Failure>;
+typedef CharacterResult = Result<Character, Failure>;
 typedef ListCharacterResult = Result<List<Character>, Failure>;
 
-// typedfs para parâmetros
+// typedefs para parâmetros
 typedef AccountParams = ({Account account});
+typedef AccountIdParams = ({String id});
 
-/// tipos usadoos Conta de Usuario
+/// tipos usados Conta de Usuario
 typedef NoParams = ();
 typedef AccountNameParams = ({String accountName});
+
 /// tipos usados para Personagem
 typedef CharacterIdParams = ({String id});
 typedef CharacterParams = ({Character character});

@@ -62,7 +62,8 @@ class AppDrawer extends StatelessWidget {
               onTap: hasAccount
                   ? () {
                       context.pop();
-                      final account = _vmAccount.accountState.state.value!;
+                      final account =
+                          _vmAccount.accountState.selectedAccount.value!;
                       if (currentRoute != AppPaths.characters) {
                         context.goNamed(
                           AppRouteNames.characters,
@@ -73,6 +74,17 @@ class AppDrawer extends StatelessWidget {
                   : null,
             );
           }),
+          _DrawerTile(
+            icon: Icons.switch_account,
+            label: 'Trocar Conta',
+            isSelected: currentRoute == AppPaths.accountSelect,
+            onTap: () {
+              context.pop();
+              if (currentRoute != AppPaths.accountSelect) {
+                context.goNamed(AppRouteNames.accountSelect);
+              }
+            },
+          ),
           _DrawerTile(
             icon: Icons.info_outline,
             label: 'Sobre',

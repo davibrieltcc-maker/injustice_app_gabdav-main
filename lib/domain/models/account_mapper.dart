@@ -3,6 +3,7 @@ import 'account_entity.dart';
 class AccountMapper {
   static Map<String, dynamic> toMap(Account account) {
     return {
+      'id': account.id,
       'name': account.name,
       'email': account.email,
       'displayName': account.displayName,
@@ -17,6 +18,7 @@ class AccountMapper {
 
   static Account fromMap(Map<String, dynamic> map) {
     return Account(
+      id: map['id'] as String?,
       name: map['name'] as String,
       email: map['email'] as String,
       displayName: map['displayName'] as String,

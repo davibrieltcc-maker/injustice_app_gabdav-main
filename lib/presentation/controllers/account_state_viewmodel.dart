@@ -1,27 +1,24 @@
 import '../../domain/models/account_entity.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
-/// ViewModel que representa o estado da entidade Account
 enum AccountSuccessEvent { created, updated, deleted }
 
-/// Define os estado da entidade Account
-/// que serão consumidas na UI
 class AccountStateViewModel {
-  /// Estado da conta, inicializada como nula
-  final state = Signal<Account?>(null);
+  /// Lista de todas as contas do usuário logado
+  final accounts = Signal<List<Account>>([]);
 
-  /// Mensagem de erro ou aviso, inicializada como nula
+  /// Conta selecionada no momento (perfil ativo)
+  final selectedAccount = Signal<Account?>(null);
+
+  /// Alias para compatibilidade — aponta para a conta selecionada
+  ReadonlySignal<Account?> get state => selectedAccount.readonly();
+
   final message = signal<String?>(null);
-
-  /// Evento de sucesso para operações de conta, inicializado como nulo
   final successEvent = signal<AccountSuccessEvent?>(null);
 
-  /// Indica se existe uma conta carregada
-  late final hasAccount = computed(() => state.value != null);
-
-  /// ===== ESTADO SEMÂNTICO =====
+  late final hasAccount = computed(() => selectedAccount.value != null);
+  late final hasAccounts = computed(() => accounts.value.isNotEmpty);
   late final isEditing = computed(() => hasAccount.value);
-
   late final canDelete = computed(() => isEditing.value);
 
   late final title = computed(
@@ -32,18 +29,13 @@ class AccountStateViewModel {
     () => isEditing.value ? 'SALVAR' : 'CRIAR',
   );
 
-  // ----------------------------------------------------------
-  // Métodos auxiliares
-  // ----------------------------------------------------------
-  /// Atualiza o estado da conta
-  void setAccount(Account? account) => state.value = account;
+  void setAccounts(List<Account> newAccounts) => accounts.value = newAccounts;
 
-  /// Limpa qualquer mensagem de erro ou aviso
+  void setAccount(Account? account) => selectedAccount.value = account;
+
   void clearMessage() => message.value = null;
 
-  /// Define uma mensagem de erro ou aviso
   void setMessage(String msg) => message.value = msg;
 
-  /// Limpa o evento de sucesso após ser consumido pela UI
   void clearSuccessEvent() => successEvent.value = null;
 }

@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 class Account extends Equatable {
+  final String id;
   final String name;
   final String email;
   final String displayName;
@@ -11,7 +13,8 @@ class Account extends Equatable {
   final int gems;
   final int energy;
 
-  const Account({
+  Account({
+    String? id,
     required this.name,
     required this.email,
     required this.displayName,
@@ -21,10 +24,10 @@ class Account extends Equatable {
     required this.gold,
     required this.gems,
     required this.energy,
-  }) ;
-
+  }) : id = id ?? const Uuid().v4();
 
   Account copyWith({
+    String? id,
     String? name,
     String? email,
     String? displayName,
@@ -36,6 +39,7 @@ class Account extends Equatable {
     int? energy,
   }) {
     return Account(
+      id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       displayName: displayName ?? this.displayName,
@@ -50,6 +54,7 @@ class Account extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         email,
         displayName,
@@ -64,6 +69,7 @@ class Account extends Equatable {
   @override
   String toString() {
     return 'Account('
+        'id: $id, '
         'name: $name, '
         'email: $email, '
         'displayName: $displayName, '

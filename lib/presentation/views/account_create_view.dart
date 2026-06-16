@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/di/dependency_injection.dart';
+import '../../core/routes/app_routes.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/typedefs/types_defs.dart';
 import '../../core/validators/email_str_validator.dart';
@@ -107,26 +109,22 @@ class _AccountCreateViewState extends State<AccountCreateView> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;
 
-          String message;
-          Color color;
+          _vmAccount.accountState.clearSuccessEvent();
 
           switch (event) {
             case AccountSuccessEvent.created:
-              message = 'Conta criada com sucesso!';
-              color = Colors.green;
+              context.goNamed(AppRouteNames.accountSelect);
 
             case AccountSuccessEvent.updated:
-              message = 'Conta atualizada com sucesso!';
-              color = Colors.green;
+              showSnackBar(
+                context,
+                'Conta atualizada com sucesso!',
+                backgroundColor: Colors.green,
+              );
 
             case AccountSuccessEvent.deleted:
-              message = 'Conta excluída com sucesso!';
-              color = Colors.red.shade400; // vermelho mais suave
+              context.goNamed(AppRouteNames.accountSelect);
           }
-
-          showSnackBar(context, message, backgroundColor: color);
-
-          _vmAccount.accountState.clearSuccessEvent();
         });
       }
     });
@@ -225,7 +223,10 @@ class _AccountCreateViewState extends State<AccountCreateView> {
   Future<void> _salvarConta() async {
     if (!_validateForm()) return;
 
+    final existingAccount = _vmAccount.accountState.selectedAccount.value;
+
     Account newAccount = Account(
+      id: existingAccount?.id,
       email: _formFields.email.controller.text.trim(),
       name: _formFields.name.controller.text.trim(),
       displayName: _formFields.displayName.controller.text.trim(),
@@ -234,7 +235,7 @@ class _AccountCreateViewState extends State<AccountCreateView> {
       gold: _gold,
       gems: _gems,
       energy: _energy,
-      updatedAt: _createdAt,
+      updatedAt: DateTime.now(),
     );
 
     if (_vmAccount.accountState.hasAccount.value) {
@@ -246,6 +247,9 @@ class _AccountCreateViewState extends State<AccountCreateView> {
   }
 
   Future<void> _excluirConta() async {
+    final account = _vmAccount.accountState.selectedAccount.value;
+    if (account == null) return;
+
     final confirm = await confirmDialog(
       context,
       title: 'Excluir conta',
@@ -257,10 +261,7 @@ class _AccountCreateViewState extends State<AccountCreateView> {
 
     if (!confirm) return;
 
-    await _vmAccount.commands.deleteAccount();
-    _formKey.currentState?.reset();
-    _formFields.clear();
-    _resetFormView();
+    await _vmAccount.commands.deleteAccount(account.id);
   }
 
   @override

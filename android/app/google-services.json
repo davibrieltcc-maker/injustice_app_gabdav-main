@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "962884197905",
-    "project_id": "injusticeapp-48ed3",
-    "storage_bucket": "injusticeapp-48ed3.firebasestorage.app"
+    "project_number": "16435055010",
+    "project_id": "injustice-app-davibriel",
+    "storage_bucket": "injustice-app-davibriel.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:962884197905:android:6be0217912f9a1eb9ddbb0",
+        "mobilesdk_app_id": "1:16435055010:android:c7ac3a9247eca1aefe0afb",
         "android_client_info": {
           "package_name": "com.example.injustice_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDhFjK8hbyGUYvsFKy5Jz8xSBDYMV6h0Oc"
+          "current_key": "AIzaSyBAF1rYQLCh8hMExj8biTULcz_UrL6T45Y"
         }
       ],
       "services": {

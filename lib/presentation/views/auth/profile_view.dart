@@ -11,6 +11,7 @@ import '../../../core/validators/email_str_validator.dart';
 import '../../../core/validators/empty_str_validator.dart';
 import '../../../core/validators/passwor_full_validator.dart';
 import '../../../data/services/auth_service_interface.dart';
+import '../../../data/services/session_storage_interface.dart';
 import '../../functions/ui_functions.dart';
 import '../../widgets/animated_fade_slide.dart';
 import '../../widgets/app_primary_button.dart';
@@ -26,6 +27,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   late final IAuthService _authService;
+  late final ISessionStorage _sessionStorage;
 
   final _formKey = GlobalKey<FormState>();
   final _nameField = _createField();
@@ -39,6 +41,7 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
     super.initState();
     _authService = injector.get<IAuthService>();
+    _sessionStorage = injector.get<ISessionStorage>();
     _loadUserData();
   }
 
@@ -150,6 +153,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<void> _signOut() async {
+    await _sessionStorage.clearSelectedAccountId();
     await _authService.signOut();
     if (!mounted) return;
     context.goNamed(AppRouteNames.login);

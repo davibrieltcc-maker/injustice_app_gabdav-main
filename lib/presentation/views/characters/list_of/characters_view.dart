@@ -26,6 +26,7 @@ class _CharactersViewState extends State<CharactersView> {
   void initState() {
     super.initState();
     _viewModel = injector.get<CharactersViewModel>();
+    _viewModel.initForAccount(account.id);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _viewModel.commands.fetchCharacters();
     });

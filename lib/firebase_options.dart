@@ -41,44 +41,44 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB9t3gvTMUBrthoSEN-0yFLets7N1ePVfk',
-    appId: '1:962884197905:web:c51ca10e57343ac19ddbb0',
-    messagingSenderId: '962884197905',
-    projectId: 'injusticeapp-48ed3',
-    authDomain: 'injusticeapp-48ed3.firebaseapp.com',
-    storageBucket: 'injusticeapp-48ed3.firebasestorage.app',
+    apiKey: 'AIzaSyBgyCZy8-DmR5rvsrD8U_wmk_m7QiEyfJg',
+    appId: '1:16435055010:web:6bae2aeb58dc5f49fe0afb',
+    messagingSenderId: '16435055010',
+    projectId: 'injustice-app-davibriel',
+    authDomain: 'injustice-app-davibriel.firebaseapp.com',
+    storageBucket: 'injustice-app-davibriel.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDhFjK8hbyGUYvsFKy5Jz8xSBDYMV6h0Oc',
-    appId: '1:962884197905:android:6be0217912f9a1eb9ddbb0',
-    messagingSenderId: '962884197905',
-    projectId: 'injusticeapp-48ed3',
-    storageBucket: 'injusticeapp-48ed3.firebasestorage.app',
+    apiKey: 'AIzaSyBAF1rYQLCh8hMExj8biTULcz_UrL6T45Y',
+    appId: '1:16435055010:android:c7ac3a9247eca1aefe0afb',
+    messagingSenderId: '16435055010',
+    projectId: 'injustice-app-davibriel',
+    storageBucket: 'injustice-app-davibriel.firebasestorage.app',
   );
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCdrksKUYfcNRf61axRbC_pdImLyPsQ2SI',
-    appId: '1:962884197905:ios:6458efd755a895a89ddbb0',
-    messagingSenderId: '962884197905',
-    projectId: 'injusticeapp-48ed3',
-    storageBucket: 'injusticeapp-48ed3.firebasestorage.app',
+    apiKey: 'AIzaSyCysRgNqUqMtNj5qkho9rdD6bvUES6w2fY',
+    appId: '1:16435055010:ios:b677d4b98356a692fe0afb',
+    messagingSenderId: '16435055010',
+    projectId: 'injustice-app-davibriel',
+    storageBucket: 'injustice-app-davibriel.firebasestorage.app',
     iosBundleId: 'com.example.injusticeApp',
   );
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCdrksKUYfcNRf61axRbC_pdImLyPsQ2SI',
-    appId: '1:962884197905:ios:6458efd755a895a89ddbb0',
-    messagingSenderId: '962884197905',
-    projectId: 'injusticeapp-48ed3',
-    storageBucket: 'injusticeapp-48ed3.firebasestorage.app',
+    apiKey: 'AIzaSyCysRgNqUqMtNj5qkho9rdD6bvUES6w2fY',
+    appId: '1:16435055010:ios:b677d4b98356a692fe0afb',
+    messagingSenderId: '16435055010',
+    projectId: 'injustice-app-davibriel',
+    storageBucket: 'injustice-app-davibriel.firebasestorage.app',
     iosBundleId: 'com.example.injusticeApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyB9t3gvTMUBrthoSEN-0yFLets7N1ePVfk',
-    appId: '1:962884197905:web:2e3c9c5361aa878b9ddbb0',
-    messagingSenderId: '962884197905',
-    projectId: 'injusticeapp-48ed3',
-    authDomain: 'injusticeapp-48ed3.firebaseapp.com',
-    storageBucket: 'injusticeapp-48ed3.firebasestorage.app',
+    apiKey: 'AIzaSyBgyCZy8-DmR5rvsrD8U_wmk_m7QiEyfJg',
+    appId: '1:16435055010:web:c014a7b684c940e6fe0afb',
+    messagingSenderId: '16435055010',
+    projectId: 'injustice-app-davibriel',
+    authDomain: 'injustice-app-davibriel.firebaseapp.com',
+    storageBucket: 'injustice-app-davibriel.firebasestorage.app',
   );
 }

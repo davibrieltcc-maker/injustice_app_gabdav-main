@@ -5,6 +5,18 @@ import '../../core/typedefs/types_defs.dart';
 import '../../domain/facades/account_facade_usecases_interface.dart';
 import '../../domain/models/account_entity.dart';
 
+final class GetAccountsCommand
+    extends ParameterizedCommand<List<Account>, Failure, NoParams> {
+  final IAccountFacadeUseCases _accountFacadeUseCases;
+
+  GetAccountsCommand(this._accountFacadeUseCases);
+
+  @override
+  Future<ListAccountResult> execute() async {
+    return await _accountFacadeUseCases.getAccounts(());
+  }
+}
+
 final class SaveAccountCommand
     extends ParameterizedCommand<void, Failure, AccountParams> {
   final IAccountFacadeUseCases _accountFacadeUseCases;
@@ -35,26 +47,17 @@ final class UpdateAccountCommand
   }
 }
 
-final class GetAccountCommand
-    extends ParameterizedCommand<Account, Failure, NoParams> {
-  final IAccountFacadeUseCases _accountFacadeUseCases;
-
-  GetAccountCommand(this._accountFacadeUseCases);
-
-  @override
-  Future<AccountResult> execute() async {
-    return await _accountFacadeUseCases.getAccount(());
-  }
-}
-
 final class DeleteAccountCommand
-    extends ParameterizedCommand<void, Failure, NoParams> {
+    extends ParameterizedCommand<void, Failure, AccountIdParams> {
   final IAccountFacadeUseCases _accountFacadeUseCases;
 
   DeleteAccountCommand(this._accountFacadeUseCases);
 
   @override
   Future<VoidResult> execute() async {
-    return await _accountFacadeUseCases.deleteAccount(());
+    if (parameter == null) {
+      return Error(InputFailure('Parametro nulo para deletar conta.'));
+    }
+    return await _accountFacadeUseCases.deleteAccount(parameter!);
   }
 }
