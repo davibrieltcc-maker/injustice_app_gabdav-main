@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 import 'package:injustice_app/domain/models/character_entity.dart';
 import '../../../../../core/theme/app_theme.dart';
+import '../../../../widgets/account_attribute_card.dart';
 import '../../../../widgets/input_text_field.dart';
 
 class CharacterCreateView extends StatefulWidget {
@@ -16,17 +16,11 @@ class CharacterCreateView extends StatefulWidget {
 class _CharacterCreateViewState extends State<CharacterCreateView> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
-  late final TextEditingController _levelController;
-  late final TextEditingController _attackController;
-  late final TextEditingController _healthController;
-  late final TextEditingController _threatController;
-  late final TextEditingController _starsController;
 
   CharacterClass selectedClass = CharacterClass.poderoso;
   CharacterRarity selectedRarity = CharacterRarity.prata;
   CharacterAlignment selectedAlignment = CharacterAlignment.heroi;
 
-  // Variáveis para armazenar os valores numéricos
   int level = 1;
   int attack = 10;
   int health = 10;
@@ -36,54 +30,29 @@ class _CharacterCreateViewState extends State<CharacterCreateView> {
   @override
   void initState() {
     super.initState();
-    
-    // 1. Identifica se é edição ou criação
-    final isEditing = widget.character != null;
-    
-    _nameController = TextEditingController(text: widget.character?.name ?? '');
-    
-    if (isEditing) {
-      selectedClass = widget.character!.characterClass;
-      selectedRarity = widget.character!.rarity;
-      selectedAlignment = widget.character!.alignment;
-      level = widget.character!.level;
-      attack = widget.character!.attack;
-      health = widget.character!.health;
-      stars = widget.character!.stars;
-      threat = widget.character!.threat;
+    final c = widget.character;
+    _nameController = TextEditingController(text: c?.name ?? '');
+
+    if (c != null) {
+      selectedClass = c.characterClass;
+      selectedRarity = c.rarity;
+      selectedAlignment = c.alignment;
+      level = c.level;
+      attack = c.attack;
+      health = c.health;
+      stars = c.stars;
+      threat = c.threat;
     }
-
-    _levelController = TextEditingController(text: level.toString());
-    _attackController = TextEditingController(text: attack.toString());
-    _healthController = TextEditingController(text: health.toString());
-    _threatController = TextEditingController(text: threat.toString());
-    _starsController = TextEditingController(text: stars.toString());
   }
 
-  int _readInt(TextEditingController controller, {required int fallback}) {
-    return int.tryParse(controller.text) ?? fallback;
-  }
-
-  String? _validateRange(
-    String? value, {
-    required String label,
-    required int min,
-    required int max,
-  }) {
-    final parsed = int.tryParse(value ?? '');
-    if (parsed == null) return '$label inválido';
-    if (parsed < min || parsed > max) return '$label deve estar entre $min e $max';
-    return null;
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
   }
 
   void _save() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-
-    level = _readInt(_levelController, fallback: 1);
-    attack = _readInt(_attackController, fallback: 10);
-    health = _readInt(_healthController, fallback: 10);
-    threat = _readInt(_threatController, fallback: 0);
-    stars = _readInt(_starsController, fallback: 1);
 
     try {
       final character = Character(
@@ -103,35 +72,13 @@ class _CharacterCreateViewState extends State<CharacterCreateView> {
 
       Navigator.pop(context, character);
     } on ArgumentError catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.message.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message.toString())));
     }
-  }
-
-  Widget _numberField(
-    String label,
-    TextEditingController controller, {
-    required int min,
-    required int max,
-  }) {
-    return InputTextField(
-      label: label,
-      controller: controller,
-      keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      validator: (value) => _validateRange(
-        value,
-        label: label,
-        min: min,
-        max: max,
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // 2. Define os textos baseados no estado (Edição vs Criação)
     final bool isEditing = widget.character != null;
 
     return Scaffold(
@@ -200,23 +147,59 @@ class _CharacterCreateViewState extends State<CharacterCreateView> {
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
-              Card(
-                child: Padding(
-                  padding: AppSpacing.paddingMd,
-                  child: Column(
-                    children: [
-                      _numberField('Level', _levelController, min: 1, max: 80),
-                      const SizedBox(height: AppSpacing.md),
-                      _numberField('Ataque', _attackController, min: 0, max: 99999),
-                      const SizedBox(height: AppSpacing.md),
-                      _numberField('Vida', _healthController, min: 0, max: 99999),
-                      const SizedBox(height: AppSpacing.md),
-                      _numberField('Ameaça', _threatController, min: 0, max: 99999),
-                      const SizedBox(height: AppSpacing.md),
-                      _numberField('Estrelas', _starsController, min: 1, max: 14),
-                    ],
-                  ),
-                ),
+              AccountAttributeCard(
+                icon: Icons.star,
+                iconColor: Theme.of(context).colorScheme.primary,
+                label: 'Level',
+                hint: '[1, 80]',
+                minValue: 1,
+                maxValue: 80,
+                value: level,
+                onChanged: (v) => setState(() => level = v),
+              ),
+              const SizedBox(height: 1),
+              AccountAttributeCard(
+                icon: Icons.sports_martial_arts,
+                iconColor: Colors.red,
+                label: 'Ataque',
+                hint: '[0, 99999]',
+                minValue: 0,
+                maxValue: 99999,
+                value: attack,
+                onChanged: (v) => setState(() => attack = v),
+              ),
+              const SizedBox(height: 1),
+              AccountAttributeCard(
+                icon: Icons.favorite,
+                iconColor: Colors.green,
+                label: 'Vida',
+                hint: '[0, 99999]',
+                minValue: 0,
+                maxValue: 99999,
+                value: health,
+                onChanged: (v) => setState(() => health = v),
+              ),
+              const SizedBox(height: 1),
+              AccountAttributeCard(
+                icon: Icons.warning_amber,
+                iconColor: Colors.orange,
+                label: 'Ameaça',
+                hint: '[0, 99999]',
+                minValue: 0,
+                maxValue: 99999,
+                value: threat,
+                onChanged: (v) => setState(() => threat = v),
+              ),
+              const SizedBox(height: 1),
+              AccountAttributeCard(
+                icon: Icons.grade,
+                iconColor: Colors.amber,
+                label: 'Estrelas',
+                hint: '[1, 14]',
+                minValue: 1,
+                maxValue: 14,
+                value: stars,
+                onChanged: (v) => setState(() => stars = v),
               ),
               const SizedBox(height: AppSpacing.lg),
               ElevatedButton(
@@ -228,16 +211,5 @@ class _CharacterCreateViewState extends State<CharacterCreateView> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _levelController.dispose();
-    _attackController.dispose();
-    _healthController.dispose();
-    _threatController.dispose();
-    _starsController.dispose();
-    super.dispose();
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:signals_flutter/signals_flutter.dart';
 import 'widgets/characters_app_bar.dart';
 import 'widgets/characters_body.dart';
 import 'widgets/characters_floating_button.dart';
 import '../../../../core/di/dependency_injection.dart';
 import '../../../../domain/models/account_entity.dart';
-import '../../../../domain/models/character_entity.dart';
 import '../../../controllers/characters_view_model.dart';
 import '../../../widgets/app_drawer.dart';
 
@@ -20,6 +20,7 @@ class CharactersView extends StatefulWidget {
 
 class _CharactersViewState extends State<CharactersView> {
   late final CharactersViewModel _viewModel;
+  late final void Function() _disposeErrorEffect;
   Account get account => widget.account;
 
   @override
@@ -30,24 +31,25 @@ class _CharactersViewState extends State<CharactersView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _viewModel.commands.fetchCharacters();
     });
+
+    _disposeErrorEffect = effect(() {
+      final msg = _viewModel.charactersState.message.value;
+      if (msg != null && mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(msg), backgroundColor: Colors.red),
+          );
+          _viewModel.charactersState.clearMessage();
+        });
+      }
+    });
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // _viewModel.refresh();
-  }
-
-  
-  Future<void> _deleteCharacter(Character character) async {
-    //descomentado// 
-    await _viewModel.commands.deleteCharacter(character.id);
-
-    if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('${character.name} removido')));
-    }
+  void dispose() {
+    _disposeErrorEffect();
+    super.dispose();
   }
 
   @override
